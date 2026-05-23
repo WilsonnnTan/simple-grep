@@ -1,6 +1,7 @@
 use std::{
     env, error::Error, fs, process
 };
+use simplegrep::search;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -21,8 +22,11 @@ fn main() {
 
 fn run(config: Config) -> Result<(), Box<dyn Error>>{
     let contents = fs::read_to_string(config.file_path)?;
+    let searched_result = search(config.query.as_str(), contents.as_str());
 
-    println!("{}", contents);
+    for res in searched_result {
+        println!("{res}");
+    }
 
     Ok(())
 }
